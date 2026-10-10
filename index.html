@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Tokyo день 2</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d1f24;--mute:#6b7080;--line:#e3e0d8;--acc:#c2410c;--acc2:#1d4ed8;--soft:#fff7ed;--bad:#b91c1c}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#181b22;--ink:#eceef3;--mute:#9aa1b2;--line:#2a2f3a;--acc:#fb923c;--acc2:#7cb4ff;--soft:#2a1d12;--bad:#f87171}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Hiragino Sans",sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 40px}
+header{padding:20px 0 8px}
+h1{font-size:24px;margin:0 0 4px;line-height:1.2}
+.sub{color:var(--mute);font-size:15px}
+.wx{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.wx span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:13px}
+.alert{background:var(--soft);border:1px solid var(--acc);border-radius:14px;padding:12px 14px;margin:12px 0}
+.alert b{color:var(--acc)}
+.alert .no{color:var(--bad);font-weight:700}
+.alert ul{margin:6px 0 0;padding-left:18px}
+#map{height:46vh;min-height:280px;border-radius:14px;border:1px solid var(--line);margin:12px 0}
+.locate{display:inline-block;margin:-4px 0 8px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.card.alt{border-style:dashed}
+.top{display:flex;gap:10px;align-items:flex-start}
+.num{flex:0 0 30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.num.g{background:#64748b}
+.time{font-size:13px;color:var(--acc);font-weight:700;letter-spacing:.3px}
+h2{font-size:18px;margin:2px 0 6px;line-height:1.25}
+p{margin:6px 0}
+.pics{display:flex;gap:8px;overflow-x:auto;margin:10px -14px 4px;padding:0 14px;scroll-snap-type:x mandatory}
+.pics figure{margin:0;flex:0 0 82%;scroll-snap-align:start}
+.pics img{width:100%;height:220px;object-fit:cover;border-radius:10px;display:block}
+.pics figcaption{font-size:11px;color:var(--mute);margin-top:3px}
+.pics figcaption a{color:var(--mute)}
+.hint{font-size:12px;color:var(--mute)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.btn{display:inline-block;text-decoration:none;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:600;background:var(--acc2);color:#fff}
+.btn.o{background:transparent;color:var(--acc2);border:1px solid var(--acc2)}
+.btn.t{background:var(--acc)}
+h3{font-size:19px;margin:28px 0 4px}
+.lead{color:var(--mute);font-size:14px;margin:0 0 8px}
+ul{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+.foot{font-size:12px;color:var(--mute);margin-top:24px}
+.foot a{color:var(--mute)}
+.pin{width:26px;height:26px;border-radius:50%;background:#c2410c;color:#fff;font:700 13px/26px -apple-system,sans-serif;text-align:center;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.pin.g{background:#64748b}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Tokyo · вс 11.10 · маршрут дня</h1>
+<div class="sub">Kagurazaka (фестиваль кошек) → Meguro (фестиваль сайры) → река Meguro → Nakameguro → Daikanyama → закат на Shibuya Sky</div>
+<div class="wx"><span>☀️ ясно</span><span>+16 / +26</span><span>дождь 0</span><span>закат 17:11</span><span>Fuji в 16-17 ч: облака 10-14%</span></div>
+</header>
+<div class="alert">🎟 <b>Билет SHIBUYA SKY куплен: 16:00-16:19.</b> Вход на 14 этаже Shibuya Scramble Square, прийти между 16:00 и 16:19, показать QR (в письме и в My Page Webket). Наверху без лимита по времени. Сумку и кепку на крышу нельзя, шкафчики на 46 этаже.</div>
+<div id="map"></div>
+<a href="#" class="locate" id="loc">📍 Показать, где я</a>
+<div class="card"><div class="top"><div class="num">1</div><div><div class="time">10:30 · 6 мин · 155 ¥</div><h2>Akihabara → Iidabashi</h2><p>JR Akihabara: <b>жёлтая линия Sobu</b> (направление Mitaka / Nakano), 3 остановки: Ochanomizu, Suidobashi, <b>Iidabashi</b>. Выход West (西口), улица Kagurazaka начинается прямо через перекрёсток.</p></div></div><div class="btns"><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Akihabara+Station&destination=Iidabashi+Station&travelmode=transit" target="_blank" rel="noopener">Маршрут в Google Maps</a></div></div>
+<div class="card"><div class="top"><div class="num">2</div><div><div class="time">~10:40-12:20 · смотреть бесплатно</div><h2>Kagurazaka: старый квартал и фестиваль кошек</h2><p>Улица в гору с лавками, а по сторонам узкие каменные переулки бывшего квартала гейш. Самый известный - <b>Hyogo-yokocho</b>.</p><p><b>Только сегодня, 10:00-17:00</b>: Kagurazaka Bakeneko Festival. Люди в кошачьем гриме и кимоно идут парадом по главной улице, «кошачий» танец Anya Odori, уличные выступления. Смотреть бесплатно (участие в параде 1 000 ¥).</p></div></div><div class="pics"><figure><img src="img/kagura1.jpg" alt="Улица Kagurazaka" loading="lazy"><figcaption>Улица Kagurazaka. <a href="https://commons.wikimedia.org/wiki/File:Kagurazaka-1.jpg">江戸村のとくぞう, CC BY-SA 4.0</a></figcaption></figure><figure><img src="img/kagura2.jpg" alt="Переулок Kagurazaka" loading="lazy"><figcaption>Переулок Kagurazaka. <a href="https://commons.wikimedia.org/wiki/File:Kagurazaka_street_2.jpg">Kabacchi, CC BY 2.0</a></figcaption></figure><figure><img src="img/hyogo.jpg" alt="Каменный переулок" loading="lazy"><figcaption>Каменный переулок. <a href="https://commons.wikimedia.org/wiki/File:Kagurazaka_path_2009-2.JPG">Kamemaru2000, CC BY-SA 3.0</a></figcaption></figure></div><div class="btns"><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Kagurazaka+Tokyo" target="_blank" rel="noopener">Kagurazaka</a><a class="btn o" href="https://www.google.com/maps/search/?api=1&query=Hyogo+Yokocho+Kagurazaka" target="_blank" rel="noopener">Hyogo-yokocho</a></div></div>
+<div class="card"><div class="top"><div class="num">3</div><div><div class="time">~12:25 · 19 мин · 209 ¥</div><h2>Iidabashi → Meguro</h2><p>Tokyo Metro <b>Namboku</b> (изумрудная линия, направление Hiyoshi / Shin-Yokohama), без пересадок, 9 остановок до <b>Meguro</b>. Вход в метро у станции Iidabashi, линия обозначена буквой N.</p></div></div><div class="btns"><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Iidabashi+Station&destination=Meguro+Station&travelmode=transit" target="_blank" rel="noopener">Маршрут в Google Maps</a></div></div>
+<div class="card"><div class="top"><div class="num">4</div><div><div class="time">~12:50-13:50 · фестиваль до 15:30</div><h2>Meguro Sanma Festival: обед</h2><p>50-й фестиваль района Meguro, только сегодня, 10:00-15:30, парк <b>Tado Hiroba</b> (Meguro 1-25-8), ~10 мин пешком от станции вниз к реке. Главное: прямо на месте жарят сайру, присланную из города Kesennuma, подают с цитрусом kabosu. Очередь может быть длинной. Если не хочется стоять, обед потом в Nakameguro.</p></div></div><div class="btns"><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Meguro+Station&destination=Tado+Hiroba+Park+Meguro&travelmode=walking" target="_blank" rel="noopener">Пешком от станции</a><a class="btn o" href="https://www.google.com/maps/search/?api=1&query=田道広場公園" target="_blank" rel="noopener">Парк Tado</a></div></div>
+<div class="card"><div class="top"><div class="num">5</div><div><div class="time">~13:50-15:00 · пешком ~30 мин</div><h2>Вдоль реки Meguro до Nakameguro</h2><p>От парка вверх по течению по набережной. <b>Nakameguro</b> - река с деревьями по берегам, маленькие кафе, магазины, дизайнерские лавки. Хорошее место для кофе.</p></div></div><div class="pics"><figure><img src="img/meguro2.jpg" alt="Река Meguro у Nakameguro (фото осенью)" loading="lazy"><figcaption>Река Meguro у Nakameguro (фото осенью). <a href="https://commons.wikimedia.org/wiki/File:Walk_along_Meguro_river_near_Nakameguro_6.jpg">Syced, CC0</a></figcaption></figure></div><div class="btns"><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Tado+Hiroba+Park+Meguro&destination=Naka-Meguro+Station&travelmode=walking" target="_blank" rel="noopener">Пешком в Google Maps</a></div></div>
+<div class="card"><div class="top"><div class="num">6</div><div><div class="time">~15:00-15:40 · пешком ~10 мин</div><h2>Daikanyama</h2><p>Тихий квартал на холме между Nakameguro и Shibuya. <b>Hillside Terrace</b> - комплекс архитектора Fumihiko Maki, рядом книжный Daikanyama T-Site. Прогулка без толпы.</p></div></div><div class="pics"><figure><img src="img/hillside.jpg" alt="Hillside Terrace, Daikanyama" loading="lazy"><figcaption>Hillside Terrace, Daikanyama. <a href="https://commons.wikimedia.org/wiki/File:Hillside_Terrace,_Building_C_20241020.jpg">Supanut Arun, CC BY 4.0</a></figcaption></figure></div><div class="btns"><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Naka-Meguro+Station&destination=Daikanyama+T-Site&travelmode=walking" target="_blank" rel="noopener">Пешком из Nakameguro</a><a class="btn o" href="https://www.google.com/maps/search/?api=1&query=Hillside+Terrace+Daikanyama" target="_blank" rel="noopener">Hillside Terrace</a></div></div>
+<div class="card"><div class="top"><div class="num">7</div><div><div class="time">15:40 выйти · ~15 мин пешком</div><h2>Daikanyama → Shibuya Scramble Square</h2><p>Пешком вниз в Shibuya, к башне Shibuya Scramble Square над станцией. Вход SHIBUYA SKY на <b>14 этаже</b>. Быть там к 16:00, окно входа до 16:19.</p></div></div><div class="btns"><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Daikanyama+T-Site&destination=Shibuya+Scramble+Square&travelmode=walking" target="_blank" rel="noopener">Пешком в Google Maps</a></div></div>
+<div class="card"><div class="top"><div class="num">8</div><div><div class="time">16:00-17:45 · закат 17:11</div><h2>SHIBUYA SKY</h2><p>Открытая крыша на 229 м. Закат в 17:11, облаков мало, на западе может быть виден силуэт Fuji. После заката город зажигается, можно остаться.</p></div></div><div class="pics"><figure><img src="img/sky1.jpg" alt="Крыша Shibuya Sky" loading="lazy"><figcaption>Крыша Shibuya Sky. <a href="https://commons.wikimedia.org/wiki/File:Shibuya_Sky_Observation_Deck_(53415730632).jpg">Stephen Kelly, CC BY 2.0</a></figcaption></figure><figure><img src="img/sky2.jpg" alt="Вид на центр" loading="lazy"><figcaption>Вид на центр. <a href="https://commons.wikimedia.org/wiki/File:Tokyo_Tower_and_Skyscrapers_from_Shibuya_Sky_Observation_Deck_(53416648661).jpg">Stephen Kelly, CC BY 2.0</a></figcaption></figure></div><div class="btns"><a class="btn" href="https://www.google.com/maps/search/?api=1&query=SHIBUYA+SKY" target="_blank" rel="noopener">Google Maps</a></div></div>
+<div class="card"><div class="top"><div class="num">9</div><div><div class="time">вечер · ~25 мин</div><h2>Ужин в Shibuya и домой</h2><p>Зелёная Yamanote (направление Shinjuku / Ikebukuro) 2 остановки до <b>Yoyogi</b>, там жёлтая Sobu (направление Chiba) до <b>Akihabara</b>. ~25 мин, 253 ¥.</p></div></div><div class="btns"><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Shibuya+Station&destination=Akihabara+Station&travelmode=transit" target="_blank" rel="noopener">Маршрут домой</a></div></div>
+<div class="foot">Срез 11.10.2026, 01:20 JST. Погода: Open-Meteo. Поезда: Yahoo!乗換案内 на 11.10. События: <a href="https://www.timeout.jp/tokyo/ja/things-to-do/bakenekokagurazaka">Time Out (Bakeneko)</a>, <a href="https://www.city.meguro.tokyo.jp/meguroplus/special_20260915.html">сайт района Meguro</a>. Карта: Esri. Фото: Wikimedia Commons.</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+var map=L.map('map',{scrollWheelZoom:false});
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles © Esri',maxZoom:18}).addTo(map);
+function pin(t,g){return L.divIcon({className:'',html:'<div class="pin'+(g?' g':'')+'">'+t+'</div>',iconSize:[26,26],iconAnchor:[13,13]})}
+function gm(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
+var P=[
+ [[35.6986,139.7739],'1','JR Akihabara','Akihabara Station'],
+ [[35.7011,139.7412],'2','Kagurazaka','Kagurazaka Tokyo'],
+ [[35.6325,139.7158],'3','JR / Metro Meguro','Meguro Station'],
+ [[35.6363,139.7091],'4','Meguro Sanma Festival, Tado Hiroba Park','田道広場公園'],
+ [[35.6441,139.6988],'5','Nakameguro','Naka-Meguro Station'],
+ [[35.6493,139.6998],'6','Daikanyama','Daikanyama T-Site'],
+ [[35.6584,139.7022],'8','SHIBUYA SKY 16:00','SHIBUYA SKY']];
+L.polyline([[35.7010,139.7475],[35.7011,139.7412],[35.7024,139.7398]],{color:'#c2410c',weight:4,opacity:.75,dashArray:'6 6'}).addTo(map);
+L.polyline([[35.7010,139.7475],[35.6325,139.7158]],{color:'#64748b',weight:3,opacity:.5,dashArray:'2 8'}).addTo(map);
+L.polyline([[35.6325,139.7158],[35.6363,139.7091],[35.6441,139.6988],[35.6493,139.6998],[35.6584,139.7022]],{color:'#c2410c',weight:4,opacity:.75,dashArray:'6 6'}).addTo(map);
+P.forEach(function(p){L.marker(p[0],{icon:pin(p[1])}).addTo(map).bindPopup('<b>'+p[2]+'</b><br><a target="_blank" href="'+gm(p[3])+'">Google Maps</a>');});
+map.fitBounds(L.latLngBounds(P.map(function(p){return p[0]})),{padding:[24,24]});
+var me;
+document.getElementById('loc').onclick=function(e){e.preventDefault();
+ if(!navigator.geolocation){alert('Геолокация недоступна');return;}
+ navigator.geolocation.getCurrentPosition(function(pos){var ll=[pos.coords.latitude,pos.coords.longitude];
+  if(me)map.removeLayer(me);me=L.circleMarker(ll,{radius:8,color:'#1d4ed8',fillColor:'#3b82f6',fillOpacity:.9}).addTo(map).bindPopup('Я здесь');map.setView(ll,15);},
+ function(){alert('Не получилось определить место');},{enableHighAccuracy:true,timeout:10000});};
+</script>
+</body>
+</html>
