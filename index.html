@@ -37,4 +37,5 @@ L.marker(H,{icon:L.divIcon({className:'',html:'<div class="pin h">H</div>',iconS
 map.fitBounds(L.latLngBounds([H,IID,AKA,MEG,TADO,NAKA,SSQ]),{padding:[20,20]});
 var me;document.getElementById('loc').onclick=function(e){e.preventDefault();if(!navigator.geolocation){alert('Геолокация недоступна');return;}
 navigator.geolocation.getCurrentPosition(function(pos){var ll=[pos.coords.latitude,pos.coords.longitude];if(me)map.removeLayer(me);me=L.circleMarker(ll,{radius:8,color:'#1d4ed8',fillColor:'#3b82f6',fillOpacity:.9}).addTo(map).bindPopup('Я здесь');map.setView(ll,15);},function(){alert('Не получилось определить место');},{enableHighAccuracy:true,timeout:10000});};
-</script></body></html>
+</script><script src="lightbox.js?v=1" defer></script>
+</body></html>
