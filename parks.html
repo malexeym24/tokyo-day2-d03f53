@@ -22,5 +22,5 @@ L.polyline([H,IID],tr).addTo(map);L.polyline([IID,ZEN,IID],w).addTo(map);L.polyl
 L.marker(H,{icon:L.divIcon({className:"",html:'<div class="pin h">H</div>',iconSize:[30,30],iconAnchor:[15,15]})}).addTo(map).bindPopup("<b>Отель</b>");
 [[ZEN,"1","Kagurazaka","Kagurazaka Tokyo"],[SEN,"2","Станция Sendagaya","Sendagaya Station"],[GY,"3","Shinjuku Gyoen","Shinjuku Gyoen"],[HAR,"4","Станция Harajuku","Harajuku Station"],[MJ,"5","Meiji Jingu","Meiji Jingu"],[YP,"6","Yoyogi Park","Yoyogi Park"],[SSQ,"7","SHIBUYA SKY 16:00","SHIBUYA SKY"]].forEach(function(p){L.marker(p[0],{icon:pin(p[1])}).addTo(map).bindPopup("<b>"+p[2]+'</b><br><a target="_blank" href="'+gm(p[3])+'">Google Maps</a>');});
 map.fitBounds(L.latLngBounds([H,ZEN,GY,MJ,YP,SSQ]),{padding:[20,20]});
-</script><script src="lightbox.js?v=1" defer></script>
+</script><script src="lightbox.js?v=2" defer></script>
 </body></html>
